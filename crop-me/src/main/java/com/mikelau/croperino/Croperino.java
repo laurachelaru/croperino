@@ -83,7 +83,7 @@ public class Croperino {
             } else if (e instanceof IOException) {
                 Crouton.makeText(ctx, "Image file captured not found", Style.ALERT).show();
             } else {
-                Crouton.makeText(ctx, "Camera access failed", Style.ALERT).show();
+                Crouton.makeText(ctx, e.getMessage(), Style.ALERT).show();
             }
         }
     }
