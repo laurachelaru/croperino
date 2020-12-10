@@ -29,13 +29,13 @@ public class Croperino {
         ctx.startActivityForResult(intent, CroperinoConfig.REQUEST_CROP_PHOTO);
     }
 
-    public static void prepareChooser(final Activity ctx, String message, int color) {
+    public static void prepareChooser(final Activity ctx, String message, int color, final String authority) {
         CameraDialog.getConfirmDialog(ctx, ctx.getResources().getString(R.string.app_name), message, "CAMERA", "GALLERY", "CLOSE",
                 color, true, new AlertInterface.WithNeutral() {
                     @Override
                     public void PositiveMethod(final DialogInterface dialog, final int id) {
                         if (CroperinoFileUtil.verifyCameraPermissions(ctx)) {
-                            prepareCamera(ctx);
+                            prepareCamera(ctx, authority);
                         }
                     }
 
@@ -51,7 +51,7 @@ public class Croperino {
                 });
     }
 
-    public static void prepareCamera(Activity ctx) {
+    public static void prepareCamera(Activity ctx, String authority) {
         try {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             Uri mImageCaptureUri;
@@ -60,7 +60,7 @@ public class Croperino {
                 if (Uri.fromFile(CroperinoFileUtil.newCameraFile()) != null) {
                     if (Build.VERSION.SDK_INT >= 23) {
                         mImageCaptureUri = FileProvider.getUriForFile(ctx,
-                                ctx.getApplicationContext().getPackageName() + ".provider",
+                                authority,
                                 CroperinoFileUtil.newCameraFile());
                     } else {
                         mImageCaptureUri = Uri.fromFile(CroperinoFileUtil.newCameraFile());
